@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ihc_app/pages/entrega/confirmar_entrega_page.dart';
 
 class ShoppingCartPage extends StatefulWidget {
   const ShoppingCartPage({Key? key}) : super(key: key);
@@ -475,6 +476,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           ElevatedButton(
             onPressed: () {
               // Procesar pago
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConfirmarEntregaScreen(),
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
