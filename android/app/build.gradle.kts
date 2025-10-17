@@ -28,6 +28,15 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        //  inyecta la clave desde local.properties
+        // 👇 Kotlin DSL correcto
+         manifestPlaceholders.put(
+           "MAPS_API_KEY",
+          project.findProperty("MAPS_API_KEY") ?: ""
+        ) 
+
+
     }
 
     buildTypes {
