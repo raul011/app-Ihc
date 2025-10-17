@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:ihc_app/pages/pago/recibo_pago_page.dart';
 
-class MetodoPagoScreen extends StatefulWidget {
-  const MetodoPagoScreen({Key? key}) : super(key: key);
+class MetodoPagoPage extends StatefulWidget {
+  const MetodoPagoPage({Key? key}) : super(key: key);
 
   @override
-  State<MetodoPagoScreen> createState() => _MetodoPagoScreenState();
+  State<MetodoPagoPage> createState() => _MetodoPagoPageState();
 }
 
-class _MetodoPagoScreenState extends State<MetodoPagoScreen> {
+class _MetodoPagoPageState extends State<MetodoPagoPage> {
   String _metodoPagoSeleccionado = 'visa';
 
   final _titularController = TextEditingController();
@@ -298,6 +299,12 @@ class _MetodoPagoScreenState extends State<MetodoPagoScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ReciboPedidoPage(),
+                          ),
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Pago procesado')),
                         );

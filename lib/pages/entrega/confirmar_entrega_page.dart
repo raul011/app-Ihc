@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ihc_app/pages/entrega/mapa_page.dart';
+import 'package:ihc_app/pages/pago/metodo_pago_page.dart';
 
 class DetalleEntrega {
   final String titulo;
@@ -591,6 +592,12 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MetodoPagoPage(),
+                      ),
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Entrega confirmada')),
                     );

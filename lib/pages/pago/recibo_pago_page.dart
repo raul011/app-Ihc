@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ReciboPedidoScreen extends StatefulWidget {
-  const ReciboPedidoScreen({Key? key}) : super(key: key);
+class ReciboPedidoPage extends StatefulWidget {
+  const ReciboPedidoPage({Key? key}) : super(key: key);
 
   @override
-  State<ReciboPedidoScreen> createState() => _ReciboPedidoScreenState();
+  State<ReciboPedidoPage> createState() => _ReciboPedidoPageState();
 }
 
-class _ReciboPedidoScreenState extends State<ReciboPedidoScreen> {
+class _ReciboPedidoPageState extends State<ReciboPedidoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
