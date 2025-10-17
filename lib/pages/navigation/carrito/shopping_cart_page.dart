@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ihc_app/pages/entrega/confirmar_entrega_page.dart';
 
-class ShoppingCartPage extends StatefulWidget {
-  const ShoppingCartPage({Key? key}) : super(key: key);
+class CarritoPage extends StatefulWidget {
+  const CarritoPage({Key? key}) : super(key: key);
 
   @override
-  State<ShoppingCartPage> createState() => _ShoppingCartPageState();
+  State<CarritoPage> createState() => _CarritoPageState();
 }
 
-class _ShoppingCartPageState extends State<ShoppingCartPage> {
+class _CarritoPageState extends State<CarritoPage> {
   List<CartItem> cartItems = [
     CartItem(
       id: '1',

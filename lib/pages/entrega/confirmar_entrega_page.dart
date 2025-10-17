@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:ihc_app/pages/entrega/mapa_page.dart';
 
+class DetalleEntrega {
+  final String titulo;
+  final String descripcion;
+  final String precio;
+  final String horario;
+  final IconData icon;
+  final List<String>? horariosDisponibles;
+
+  DetalleEntrega({
+    required this.titulo,
+    required this.descripcion,
+    required this.precio,
+    required this.horario,
+    required this.icon,
+    this.horariosDisponibles,
+  });
+}
+
 class ConfirmarEntregaScreen extends StatefulWidget {
   const ConfirmarEntregaScreen({Key? key}) : super(key: key);
 
@@ -17,6 +35,56 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
   final _instruccionesController = TextEditingController();
 
   String _tipoEntregaSeleccionado = 'estándar';
+  String _diaSeleccionado = 'mañana';
+
+  // Detalles de cada tipo de entrega
+  final Map<String, DetalleEntrega> detallesEntrega = {
+    'estándar': DetalleEntrega(
+      titulo: 'Entrega estándar',
+      descripcion: 'Llega en 2-3 días',
+      precio: 'Gratis desde Bs 150 - Bs 12 si es menor',
+      horario: 'Horario: 09:00 - 18:00',
+      icon: Icons.local_shipping,
+    ),
+    'express': DetalleEntrega(
+      titulo: 'Entrega express',
+      descripcion: 'Llega en 24 horas',
+      precio: 'Bs 30',
+      horario: 'Horario: 08:00 - 20:00',
+      icon: Icons.flash_on,
+      horariosDisponibles: [
+        '12:00 PM - 4:00 PM',
+        '4:00 PM - 6:00 PM',
+        '6:00 PM - 8:00 PM',
+        '8:00 PM - 10:00 PM',
+      ],
+    ),
+    'retiro': DetalleEntrega(
+      titulo: 'Retiro en tienda',
+      descripcion: 'Retira tu pedido hoy',
+      precio: 'Gratis',
+      horario: 'Horario: 10:00 - 19:00',
+      icon: Icons.store,
+      horariosDisponibles: [
+        'Sucursal la guardia',
+        'Sucursal la guardia',
+        'Sucursal la guardia',
+      ],
+    ),
+    'programada': DetalleEntrega(
+      titulo: 'Entrega programada',
+      descripcion: 'Elige tu fecha y hora',
+      precio: 'Bs 15',
+      horario: 'Horario: 09:00 - 18:00',
+      icon: Icons.calendar_today,
+      horariosDisponibles: [
+        '12:00 PM - 4:00 PM',
+        '4:00 PM - 6:00 PM',
+        '6:00 PM - 8:00 PM',
+        '8:00 PM - 10:00 PM',
+      ],
+    ),
+  };
 
   @override
   void dispose() {
@@ -32,7 +100,7 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
   void _mostrarComentarioModal() {
     showDialog(
       context: context,
-      barrierDismissible: false, // evita que se cierre al tocar fuera
+      barrierDismissible: false,
       builder: (context) {
         return Dialog(
           shape: RoundedRectangleBorder(
@@ -50,6 +118,8 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    DetalleEntrega detalleActual = detallesEntrega[_tipoEntregaSeleccionado]!;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
@@ -70,8 +140,6 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Mi Ubicación Actual
-              // Mi Ubicación Actual
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -104,10 +172,7 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              // Dirección de Entrega
               const Text(
                 'Dirección de Entrega',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -174,13 +239,10 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
                 ],
               ),
               const SizedBox(height: 8),
-
-              // Comentarios de entrega
               const Text(
                 'Comentarios de entrega',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-
               const SizedBox(height: 5),
               GestureDetector(
                 onTap: _mostrarComentarioModal,
@@ -215,8 +277,6 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Tipo de entrega
               const Text(
                 'Tipo de entrega',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -252,9 +312,281 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
 
-              // Botón Confirmar entrega
+              // Card con los detalles de entrega
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[300]!),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      detalleActual.descripcion,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      detalleActual.precio,
+                      style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      detalleActual.horario,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Mostrar horarios disponibles si existen
+              if (detalleActual.horariosDisponibles != null) ...[
+                const SizedBox(height: 20),
+                if (_tipoEntregaSeleccionado == 'programada')
+                  // Para entrega programada: mostrar selector de días
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap:
+                                      () => setState(
+                                        () => _diaSeleccionado = 'mañana',
+                                      ),
+                                  child: Row(
+                                    children: [
+                                      Radio<String>(
+                                        value: 'mañana',
+                                        groupValue: _diaSeleccionado,
+                                        onChanged: (value) {
+                                          setState(
+                                            () => _diaSeleccionado = value!,
+                                          );
+                                        },
+                                      ),
+                                      const Text('mañana'),
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap:
+                                      () => setState(
+                                        () => _diaSeleccionado = 'Jueves',
+                                      ),
+                                  child: Row(
+                                    children: [
+                                      Radio<String>(
+                                        value: 'Jueves',
+                                        groupValue: _diaSeleccionado,
+                                        onChanged: (value) {
+                                          setState(
+                                            () => _diaSeleccionado = value!,
+                                          );
+                                        },
+                                      ),
+                                      const Text('Jueves'),
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap:
+                                      () => setState(
+                                        () => _diaSeleccionado = 'Viernes',
+                                      ),
+                                  child: Row(
+                                    children: [
+                                      Radio<String>(
+                                        value: 'Viernes',
+                                        groupValue: _diaSeleccionado,
+                                        onChanged: (value) {
+                                          setState(
+                                            () => _diaSeleccionado = value!,
+                                          );
+                                        },
+                                      ),
+                                      const Text('Viernes'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Horarios Disponibles',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            detalleActual.precio,
+                            style: TextStyle(
+                              color: Colors.blue[600],
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Column(
+                        children: [
+                          for (String horario
+                              in detalleActual.horariosDisponibles!)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey[300]!),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 20,
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.grey[400]!,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      horario,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  )
+                else
+                  // Para express y retiro: mostrar horarios/sucursales
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _tipoEntregaSeleccionado == 'retiro'
+                            ? 'Sucursales Disponibles'
+                            : 'Horarios Disponibles',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        detalleActual.precio,
+                        style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                      ),
+                      const SizedBox(height: 12),
+                      Column(
+                        children: [
+                          for (String item
+                              in detalleActual.horariosDisponibles!)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey[300]!),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          _tipoEntregaSeleccionado == 'retiro'
+                                              ? Icons.location_on
+                                              : Icons.access_time,
+                                          color: Colors.grey[600],
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Text(
+                                          item,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    if (_tipoEntregaSeleccionado == 'retiro')
+                                      Text(
+                                        'Disponible',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.green[600],
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    else
+                                      Container(
+                                        width: 20,
+                                        height: 20,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.grey[400]!,
+                                            width: 2,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+              ],
+
+              const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -368,14 +700,11 @@ class _ComentarioModalState extends State<_ComentarioModal> {
       ),
       child: SingleChildScrollView(
         padding: EdgeInsets.only(
-          bottom:
-              MediaQuery.of(context).viewInsets.bottom, // espacio para teclado
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ... tu header, textfield y botón Guardar
-            // Header
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Row(
@@ -401,7 +730,6 @@ class _ComentarioModalState extends State<_ComentarioModal> {
               ),
             ),
             const SizedBox(height: 16),
-            // Text Field
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
@@ -430,7 +758,6 @@ class _ComentarioModalState extends State<_ComentarioModal> {
               ),
             ),
             const SizedBox(height: 24),
-            // Botón Guardar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SizedBox(
