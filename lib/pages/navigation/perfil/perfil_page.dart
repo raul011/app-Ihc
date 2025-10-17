@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'editarPerfil_page.dart';
 class PerfilPage extends StatefulWidget {
   const PerfilPage({Key? key}) : super(key: key);
 
@@ -75,7 +75,12 @@ class _PerfilPageState extends State<PerfilPage> {
                   _menuItem(
                     icon: Icons.person_outline,
                     title: 'Mi información',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const EditarPerfilPage()),
+                  );
+                    },
                   ),
                   const SizedBox(height: 12),
                   _menuItem(
