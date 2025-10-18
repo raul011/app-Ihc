@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class ReciboPedidoPage extends StatefulWidget {
   const ReciboPedidoPage({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _ReciboPedidoPageState extends State<ReciboPedidoPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Confirmar pedido',
+          'Recibo pedido',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -32,22 +33,16 @@ class _ReciboPedidoPageState extends State<ReciboPedidoPage> {
             children: [
               const SizedBox(height: 40),
               // Checkmark animado
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green[500],
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.green[300]!.withOpacity(0.5),
-                      blurRadius: 30,
-                      spreadRadius: 10,
-                    ),
-                  ],
+              SizedBox(
+                width: 150,
+                height: 150,
+                child: Lottie.asset(
+                  'assets/animaciones/Success.json',
+                  repeat: false, // solo una vez
+                  animate: true,
                 ),
-                child: const Icon(Icons.check, color: Colors.white, size: 60),
               ),
+
               const SizedBox(height: 24),
               // Título
               const Text(
@@ -177,12 +172,10 @@ class _ReciboPedidoPageState extends State<ReciboPedidoPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Te enviaremos una notificación cuando tu pedido esté en camino',
+                    'Te enviaremos una notificación cuando tu pedido   \n esté en camino',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
-                  const SizedBox(width: 4),
-                  const Text('📧', style: TextStyle(fontSize: 14)),
                 ],
               ),
               const SizedBox(height: 24),

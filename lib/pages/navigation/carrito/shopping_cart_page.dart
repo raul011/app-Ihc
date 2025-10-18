@@ -476,8 +476,15 @@ class _CarritoPageState extends State<CarritoPage> {
           ElevatedButton(
             onPressed: () {
               // Procesar pago
-
+              /*
               Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConfirmarEntregaScreen(),
+                ),
+              );
+              */
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ConfirmarEntregaScreen(),

@@ -36,7 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   flutter_native_splash: ^2.4.0
-  google_maps_flutter: ^2.7.0
+  google_maps_flutter: ^2.7.0 
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/animaciones/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
