@@ -3,6 +3,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'pages/navigation/carrito/shopping_cart_page.dart';
 import 'pages/navigation/home/home_page.dart';
 import 'pages/navigation/perfil/perfil_page.dart';
+import 'pages/navigation/compra/categorias_page.dart';
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -39,7 +41,7 @@ class _HomePageMainState extends State<HomePageMain> {
 
   final List<Widget> _pages = const [
     HomePage(), // contenido del Home
-    Center(child: Text("Categorías")), // placeholder
+    CategoriasPage(), // categorías
     CarritoPage(), // carrito
     PerfilPage(),
   ];

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ihc_app/pages/pago/recibo_pago_page.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class MetodoPagoPage extends StatefulWidget {
   const MetodoPagoPage({Key? key}) : super(key: key);
@@ -10,6 +11,7 @@ class MetodoPagoPage extends StatefulWidget {
 
 class _MetodoPagoPageState extends State<MetodoPagoPage> {
   String _metodoPagoSeleccionado = 'visa';
+  String? _qrGenerado;
 
   final _titularController = TextEditingController();
   final _numeroTarjetaController = TextEditingController();
@@ -25,6 +27,13 @@ class _MetodoPagoPageState extends State<MetodoPagoPage> {
     _fechaVencimientoController.dispose();
     _cvvController.dispose();
     super.dispose();
+  }
+
+  void _generarQR() {
+    setState(() {
+      _qrGenerado =
+          'https://payment.example.com/qr/${DateTime.now().millisecondsSinceEpoch}';
+    });
   }
 
   @override
@@ -67,14 +76,13 @@ class _MetodoPagoPageState extends State<MetodoPagoPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        _metodoPagoButton('visa', 'assets/visa_logo.png'),
+                        _metodoPagoButton('visa', 'tarjeta'),
                         const SizedBox(width: 12),
-                        _metodoPagoButton(
-                          'transferencia',
-                          'assets/transfer_icon.png',
-                        ),
+                        _metodoPagoButton('transferencia', 'efectivo'),
                         const SizedBox(width: 12),
-                        _metodoPagoButton('qr', 'assets/qr_icon.png'),
+                        _metodoPagoButton('qr', 'qr'),
+                        const SizedBox(width: 12),
+                        _metodoPagoButton('tigo', 'tigo'),
                       ],
                     ),
                   ),
@@ -92,159 +100,243 @@ class _MetodoPagoPageState extends State<MetodoPagoPage> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   const SizedBox(height: 16),
-                  // Titular de la tarjeta
-                  const Text(
-                    'Titular de la tarjeta*',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _titularController,
-                    decoration: InputDecoration(
-                      hintText: 'label*',
-                      isDense: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  // Número de tarjeta
-                  const Text(
-                    'Número de la tarjeta*',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _numeroTarjetaController,
-                    decoration: InputDecoration(
-                      hintText: 'label*',
-                      isDense: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 16),
-                  // Fecha de vencimiento y CVV
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Fecha de vencimiento',
+
+                  // Mostrar formulario QR si está seleccionado
+                  if (_metodoPagoSeleccionado == 'qr')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Escanea el código QR para pagar',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Center(
+                          child:
+                              _qrGenerado == null
+                                  ? Container(
+                                    width: 200,
+                                    height: 200,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey[300]!,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'QR no generado',
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  : Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey[300]!,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: QrImageView(
+                                      data: _qrGenerado!,
+                                      version: QrVersions.auto,
+                                      size: 200.0,
+                                    ),
+                                  ),
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _generarQR,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text(
+                              'Generar QR',
                               style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13,
-                                color: Colors.grey,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(height: 8),
-                            TextField(
-                              controller: _fechaVencimientoController,
-                              decoration: InputDecoration(
-                                hintText: 'label*',
-                                isDense: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 12,
-                                ),
-                              ),
-                              keyboardType: TextInputType.datetime,
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      ],
+                    )
+                  else
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Titular de la tarjeta
+                        const Text(
+                          'Titular de la tarjeta*',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _titularController,
+                          decoration: InputDecoration(
+                            hintText: 'nombre completo',
+                            isDense: true,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        // Número de tarjeta
+                        const Text(
+                          'Número de la tarjeta*',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _numeroTarjetaController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 12,
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(height: 16),
+                        // Fecha de vencimiento y CVV
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                const Text(
-                                  'CVV',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Colors.grey,
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Fecha de vencimiento',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 13,
+                                      color: Colors.grey,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 4),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder:
-                                          (context) => AlertDialog(
-                                            title: const Text('CVV'),
-                                            content: const Text(
-                                              'El CVV es el código de seguridad de 3 dígitos en la parte trasera de tu tarjeta.',
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed:
-                                                    () =>
-                                                        Navigator.pop(context),
-                                                child: const Text('Entendido'),
-                                              ),
-                                            ],
+                                  const SizedBox(height: 8),
+                                  TextField(
+                                    controller: _fechaVencimientoController,
+                                    decoration: InputDecoration(
+                                      hintText: 'MM/AA',
+                                      isDense: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 12,
                                           ),
-                                    );
-                                  },
-                                  child: Icon(
-                                    Icons.info_outline,
-                                    size: 16,
-                                    color: Colors.grey[400],
+                                    ),
+                                    keyboardType: TextInputType.datetime,
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            TextField(
-                              controller: _cvvController,
-                              decoration: InputDecoration(
-                                hintText: 'label*',
-                                isDense: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 12,
-                                ),
+                                ],
                               ),
-                              keyboardType: TextInputType.number,
-                              obscureText: true,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        'CVV',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder:
+                                                (context) => AlertDialog(
+                                                  title: const Text('CVV'),
+                                                  content: const Text(
+                                                    'El CVV es el código de seguridad de 3 dígitos en la parte trasera de tu tarjeta.',
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed:
+                                                          () => Navigator.pop(
+                                                            context,
+                                                          ),
+                                                      child: const Text(
+                                                        'Entendido',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                          );
+                                        },
+                                        child: Icon(
+                                          Icons.info_outline,
+                                          size: 16,
+                                          color: Colors.grey[400],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TextField(
+                                    controller: _cvvController,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 12,
+                                          ),
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    obscureText: true,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+
                   const SizedBox(height: 24),
                   // Monto total
                   Container(
@@ -335,31 +427,29 @@ class _MetodoPagoPageState extends State<MetodoPagoPage> {
     );
   }
 
-  Widget _metodoPagoButton(String id, String assetPath) {
+  Widget _metodoPagoButton(String id, String nombreImagen) {
     bool isSelected = _metodoPagoSeleccionado == id;
+
     return GestureDetector(
       onTap: () => setState(() => _metodoPagoSeleccionado = id),
       child: Container(
-        width: 80,
-        height: 60,
+        width: 100,
+        height: 80,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.white.withOpacity(0.9),
           borderRadius: BorderRadius.circular(8),
           border: isSelected ? Border.all(color: Colors.white, width: 2) : null,
+          color: Colors.white.withOpacity(0.9),
         ),
-        child: Center(
-          child: Container(
-            width: 50,
-            height: 40,
-            color: Colors.grey[200],
-            child: Icon(
-              id == 'visa'
-                  ? Icons.credit_card
-                  : id == 'transferencia'
-                  ? Icons.transform
-                  : Icons.qr_code,
-              color: Colors.grey[600],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Image.asset(
+            'assets/imagenes/metodo_pago_$nombreImagen.png',
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return Center(
+                child: Icon(Icons.broken_image, color: Colors.grey[400]),
+              );
+            },
           ),
         ),
       ),
