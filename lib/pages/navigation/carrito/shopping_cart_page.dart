@@ -17,7 +17,7 @@ class _CarritoPageState extends State<CarritoPage> {
       price: 35,
       quantity: 1,
       store: 'Tienda de Productos',
-      imageUrl: 'assets/milk.png',
+      imageUrl: 'assets/imagenes/categoria-despensa/imagen_aceite1.png',
     ),
     CartItem(
       id: '2',
@@ -26,7 +26,7 @@ class _CarritoPageState extends State<CarritoPage> {
       price: 35,
       quantity: 1,
       store: 'Tienda de Productos',
-      imageUrl: 'assets/milk.png',
+      imageUrl: 'assets/imagenes/categoria-despensa/imagen_aceite1.png',
     ),
     CartItem(
       id: '3',
@@ -35,7 +35,7 @@ class _CarritoPageState extends State<CarritoPage> {
       price: 35,
       quantity: 1,
       store: 'Tienda de Productos',
-      imageUrl: 'assets/milk.png',
+      imageUrl: 'assets/imagenes/categoria-despensa/imagen_aceite1.png',
     ),
     CartItem(
       id: '4',
@@ -44,7 +44,7 @@ class _CarritoPageState extends State<CarritoPage> {
       price: 35,
       quantity: 1,
       store: 'Tienda de Productos',
-      imageUrl: 'assets/milk.png',
+      imageUrl: 'assets/imagenes/categoria-despensa/imagen_aceite1.png',
     ),
   ];
 

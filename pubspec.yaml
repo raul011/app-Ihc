@@ -38,7 +38,7 @@ dependencies:
   flutter_native_splash: ^2.4.0
   google_maps_flutter: ^2.7.0 
   lottie: ^3.1.2
-
+  qr_flutter: ^4.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,7 +66,9 @@ flutter:
   assets:
     - assets/
     - assets/animaciones/
-
+    - assets/imagenes/
+    - assets/imagenes/categoria-despensa/
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

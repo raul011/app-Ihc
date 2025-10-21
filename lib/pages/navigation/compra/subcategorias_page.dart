@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-// Importa tu ProductListScreen aquí
-import 'package:ihc_app/pages/navigation/compra/subcategorias_page.dart';
-import 'package:ihc_app/pages/navigation/home/promo_bane_widget.dart';
 
-// import 'package:tu_app/screens/product_list_screen.dart';
+class ProductListScreen extends StatelessWidget {
+  const ProductListScreen({Key? key}) : super(key: key);
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
+  // 🔹 Simulación de JSON en memoria
   final List<Map<String, dynamic>> categorias = const [
     {
       "nombre": "Aceites y Vinagres",
@@ -161,220 +157,26 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Lista de Productos"),
+        backgroundColor: Colors.red,
+      ),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            _buildExclusiveCouponsBanner(),
-            //_buildPromoBanner(),
-            PromoBanner(
-              images: [
-                'assets/imagenes/promo_banner3.png',
-                'assets/imagenes/promo_banner1.jpeg',
-                'assets/imagenes/promo_banner4.png',
-              ],
-            ),
-            _buildCategories(context),
-            // 🔹 Aquí recorres la lista de categorias
-            ...categorias.map((categoria) {
-              return _buildProductSection(
-                categoria["nombre"],
-                categoria["productos"],
-              );
-            }).toList(),
-          ],
+          children:
+              categorias.map((categoria) {
+                return _buildProductSection(
+                  categoria["nombre"],
+                  categoria["productos"],
+                );
+              }).toList(),
         ),
       ),
     );
   }
 
-  static Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      color: Colors.white,
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.search, color: Colors.grey[400]),
-                  const SizedBox(width: 8),
-                  Text(
-                    '¿Que estas buscando Raul?',
-                    style: TextStyle(color: Colors.grey[400], fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Stack(
-            children: [
-              Icon(
-                Icons.notifications_outlined,
-                color: Colors.grey[700],
-                size: 28,
-              ),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  static Widget _buildExclusiveCouponsBanner() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.pink[50],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.red[400],
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.local_offer, color: Colors.white, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  '¡Cupones Exclusivos!',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                Text(
-                  'Hasta 20% off en productos seleccionados',
-                  style: TextStyle(fontSize: 11, color: Colors.grey[700]),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategories(BuildContext context) {
-    final categories = [
-      {'nombre': 'despensa', 'icono': Icons.shopping_basket},
-      {'nombre': 'bebidas', 'icono': Icons.local_drink},
-      {'nombre': 'higiene', 'icono': Icons.face},
-      {'nombre': 'bebes', 'icono': Icons.child_care},
-    ];
-
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Descubra nuestras categorias',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:
-                categories.map((category) {
-                  return _categoriaItem(
-                    context: context,
-                    nombre: category['nombre'] as String,
-                    icono: category['icono'] as IconData,
-                  );
-                }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _categoriaItem({
-    required BuildContext context,
-    required String nombre,
-    required IconData icono,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ProductListScreen()),
-        );
-        final messenger = ScaffoldMessenger.of(context);
-        messenger.hideCurrentSnackBar();
-        messenger.showSnackBar(SnackBar(content: Text(nombre)));
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 65,
-            height: 65,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey[100],
-              border: Border.all(
-                color: const Color.fromARGB(255, 231, 2, 2),
-                width: 2,
-              ),
-            ),
-            child: ClipOval(
-              child: Image.asset(
-                'assets/imagenes/categoria_$nombre.png',
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(icono, color: Colors.blue, size: 28);
-                },
-              ),
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            nombre,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-              height: 1.2,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
-
+  // 🔹 Sección de productos por categoría
   Widget _buildProductSection(String title, List productos) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -422,6 +224,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // 🔹 Tarjeta de producto
   Widget _buildProductCard(Map producto) {
     return Container(
       width: 140,
