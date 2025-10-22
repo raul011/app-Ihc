@@ -76,7 +76,7 @@ class _MetodoPagoPageState extends State<MetodoPagoPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        _metodoPagoButton('visa', 'tarjeta'),
+                        _metodoPagoButton('visa', 'visa'),
                         const SizedBox(width: 12),
                         _metodoPagoButton('transferencia', 'efectivo'),
                         const SizedBox(width: 12),
@@ -101,8 +101,47 @@ class _MetodoPagoPageState extends State<MetodoPagoPage> {
                   ),
                   const SizedBox(height: 16),
 
+                  // Mostrar mensaje para pago en efectivo
+                  if (_metodoPagoSeleccionado == 'transferencia')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.orange[50],
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.orange[200]!),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.money,
+                                size: 60,
+                                color: Colors.orange[700],
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Pago en efectivo',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange[900],
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              const Text(
+                                'Debe pagar el monto total al repartidor al momento de recibir su pedido.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 15, height: 1.4),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
                   // Mostrar formulario QR si está seleccionado
-                  if (_metodoPagoSeleccionado == 'qr')
+                  else if (_metodoPagoSeleccionado == 'qr')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

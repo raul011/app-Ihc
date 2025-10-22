@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ihc_app/pages/navigation/compra/compras_realizadas_page.dart';
 import 'editarPerfil_page.dart';
 
 class PerfilPage extends StatefulWidget {
@@ -89,7 +90,14 @@ class _PerfilPageState extends State<PerfilPage> {
                   _menuItem(
                     icon: Icons.shopping_bag_outlined,
                     title: 'Mis pedidos',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MisPedidosScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 12),
                   _menuItem(

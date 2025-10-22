@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ihc_app/pages/entrega/seguimiento_page.dart';
+import 'package:ihc_app/pages/navigation/home/home_page.dart';
 import 'package:lottie/lottie.dart';
 
 class ReciboPedidoPage extends StatefulWidget {
@@ -119,6 +121,13 @@ class _ReciboPedidoPageState extends State<ReciboPedidoPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SeguimientoScreen(),
+                      ),
+                    );
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Siguiendo tu pedido...')),
                     );
@@ -145,6 +154,11 @@ class _ReciboPedidoPageState extends State<ReciboPedidoPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Volviendo a comprar...')),
                     );

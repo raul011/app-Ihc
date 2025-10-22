@@ -253,7 +253,7 @@ class _CategoriaPageState extends State<CategoriasPage> {
               shape: BoxShape.circle,
               color: Colors.grey[100],
               border: Border.all(
-                color: const Color.fromARGB(255, 231, 2, 2),
+                color: const Color.fromARGB(255, 214, 212, 212),
                 width: 2,
               ),
             ),

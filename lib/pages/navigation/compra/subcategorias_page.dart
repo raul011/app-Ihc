@@ -224,7 +224,6 @@ class ProductListScreen extends StatelessWidget {
     );
   }
 
-  // 🔹 Tarjeta de producto
   Widget _buildProductCard(Map producto) {
     return Container(
       width: 140,
@@ -284,13 +283,33 @@ class ProductListScreen extends StatelessWidget {
                     ),
                   ),
                   // Favorito
+
+                  // Botón flotante "+"
                   Positioned(
-                    top: 8,
-                    left: 8,
-                    child: Icon(
-                      Icons.favorite_border,
-                      color: Colors.grey[400],
-                      size: 20,
+                    bottom: 6,
+                    right: 6,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 187, 2, 2), // rojo
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 4,
+                            offset: const Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        onPressed: () {
+                          // Aquí puedes integrar con tu Provider del carrito
+                        },
+                      ),
                     ),
                   ),
                 ],

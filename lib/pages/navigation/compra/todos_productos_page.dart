@@ -123,7 +123,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Imagen del producto
+          // Imagen del producto con botón flotante
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -167,6 +167,39 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ),
+                  ),
+                  // Botón flotante "+"
+                  Positioned(
+                    bottom: 8,
+                    right: 8,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 187, 2, 2), // rojo
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 4,
+                            offset: const Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        onPressed: () {
+                          // Aquí puedes integrar con tu Provider del carrito
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("${product["title"]} añadido"),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
