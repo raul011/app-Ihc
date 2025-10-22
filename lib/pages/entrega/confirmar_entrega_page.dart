@@ -107,7 +107,7 @@ class _ConfirmarEntregaScreenState extends State<ConfirmarEntregaScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          backgroundColor: const Color(0xFF1a1a1a),
+          backgroundColor: const Color.fromARGB(255, 204, 197, 197),
           child: _ComentarioModal(
             controller: _instruccionesController,
             onGuardar: () => Navigator.pop(context),
@@ -699,7 +699,7 @@ class _ComentarioModalState extends State<_ComentarioModal> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF1a1a1a),
+        color: Color.fromARGB(255, 32, 31, 31),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),

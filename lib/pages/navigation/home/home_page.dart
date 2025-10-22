@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 // Importa tu ProductListScreen aquí
 import 'package:ihc_app/pages/navigation/compra/subcategorias_page.dart';
 import 'package:ihc_app/pages/navigation/home/promo_bane_widget.dart';
+import 'package:ihc_app/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 // import 'package:tu_app/screens/product_list_screen.dart';
 
@@ -10,13 +12,13 @@ class HomePage extends StatelessWidget {
 
   final List<Map<String, dynamic>> categorias = const [
     {
-      "nombre": "Aceites y Vinagres",
+      "nombre": "Productos nuevos",
       "productos": [
         {
           "imagen": "assets/imagenes/categoria-despensa/imagen_aceite1.png",
           "nombre": "Aceite de Oliva Extra Virgen",
           "descripcion": "Botella 500ml",
-          "precio": "BS 45",
+          "precio": "BS 15",
           "descuento": "-10%",
         },
         {
@@ -57,7 +59,7 @@ class HomePage extends StatelessWidget {
       ],
     },
     {
-      "nombre": "Arroz y Granos",
+      "nombre": "Productos en promo",
       "productos": [
         {
           "imagen": "assets/imagenes/categoria-despensa/imagen_arroz1.png",
@@ -103,60 +105,6 @@ class HomePage extends StatelessWidget {
         },
       ],
     },
-    {
-      "nombre": "Café y Té",
-      "productos": [
-        {
-          "imagen": "assets/imagenes/categoria-despensa/imagen_cafe1.png",
-          "nombre": "Café Molido",
-          "descripcion": "Paquete 500g",
-          "precio": "BS 35",
-          "descuento": "-25%",
-        },
-        {
-          "imagen": "assets/imagenes/categoria-despensa/imagen_te1.png",
-          "nombre": "Té Verde",
-          "descripcion": "Caja 20 sobres",
-          "precio": "BS 15",
-          "descuento": "-5%",
-        },
-        {
-          "imagen": "assets/imagenes/categoria-despensa/imagen_cafe2.png",
-          "nombre": "Café Molido",
-          "descripcion": "Paquete 500g",
-          "precio": "BS 35",
-          "descuento": "-25%",
-        },
-        {
-          "imagen": "assets/imagenes/categoria-despensa/imagen_te2.png",
-          "nombre": "Té Verde",
-          "descripcion": "Caja 20 sobres",
-          "precio": "BS 15",
-          "descuento": "-5%",
-        },
-        {
-          "imagen": "assets/imagenes/categoria-despensa/imagen_cafe3.png",
-          "nombre": "Café Molido",
-          "descripcion": "Paquete 500g",
-          "precio": "BS 35",
-          "descuento": "-25%",
-        },
-        {
-          "imagen": "assets/imagenes/categoria-despensa/imagen_te3.png",
-          "nombre": "Té Verde",
-          "descripcion": "Caja 20 sobres",
-          "precio": "BS 15",
-          "descuento": "-5%",
-        },
-        {
-          "imagen": "assets/imagenes/categoria-despensa/imagen_te4.png",
-          "nombre": "Té Verde",
-          "descripcion": "Caja 20 sobres",
-          "precio": "BS 15",
-          "descuento": "-5%",
-        },
-      ],
-    },
   ];
 
   @override
@@ -180,8 +128,9 @@ class HomePage extends StatelessWidget {
             // 🔹 Aquí recorres la lista de categorias
             ...categorias.map((categoria) {
               return _buildProductSection(
-                categoria["nombre"],
-                categoria["productos"],
+                context, // <-- Pasamos el context
+                categoria["nombre"] as String,
+                categoria["productos"] as List,
               );
             }).toList(),
           ],
@@ -344,7 +293,7 @@ class HomePage extends StatelessWidget {
               shape: BoxShape.circle,
               color: Colors.grey[100],
               border: Border.all(
-                color: const Color.fromARGB(255, 231, 2, 2),
+                color: const Color.fromARGB(255, 219, 219, 219),
                 width: 2,
               ),
             ),
@@ -375,7 +324,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductSection(String title, List productos) {
+  Widget _buildProductSection(
+    BuildContext context,
+    String title,
+    List productos,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -392,14 +345,6 @@ class HomePage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Text(
-                "Ver todos",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
             ],
           ),
         ),
@@ -413,7 +358,7 @@ class HomePage extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(right: 16),
-                child: _buildProductCard(productos[index]),
+                child: _buildProductCard(context, productos[index]),
               );
             },
           ),
@@ -422,7 +367,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(Map producto) {
+  Widget _buildProductCard(BuildContext context, Map producto) {
     return Container(
       width: 140,
       decoration: BoxDecoration(
@@ -433,15 +378,16 @@ class HomePage extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8),
                 ),
               ),
               child: Stack(
                 children: [
+                  // Imagen del producto
                   Center(
                     child: Image.asset(
                       producto['imagen'],
@@ -458,36 +404,68 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   // Descuento
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 2,
-                      ),
-                      child: Text(
-                        producto['descuento'],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                  if (producto['descuento'] != null &&
+                      producto['descuento'].toString().isNotEmpty)
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
-                  ),
                   // Favorito
+
+                  // Botón flotante "+"
                   Positioned(
-                    top: 8,
-                    left: 8,
-                    child: Icon(
-                      Icons.favorite_border,
-                      color: Colors.grey[400],
-                      size: 20,
+                    bottom: 6,
+                    right: 6,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 187, 2, 2),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 4,
+                            offset: const Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        onPressed: () {
+                          // 1. Crea un objeto Product desde el mapa
+                          final product = Product(
+                            nombre: producto['nombre'],
+                            descripcion: producto['descripcion'],
+                            precio: producto['precio'],
+                            imagen: producto['imagen'],
+                            descuento: producto['descuento'],
+                          );
+
+                          // 2. Accede al CartProvider y añade el producto
+                          Provider.of<CartProvider>(
+                            context,
+                            listen: false,
+                          ).addProduct(product);
+
+                          // 3. Muestra una confirmación
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '${product.nombre} añadido al carrito',
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
